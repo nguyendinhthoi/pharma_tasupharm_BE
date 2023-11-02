@@ -18,13 +18,8 @@ public class AppUser {
     private Long id;
     private String userName;
     private String password;
-    private String customerName;
-    @Column(columnDefinition = "date")
-    private String birthday;
     private String email;
-    private String address;
-    private Integer gender;
-    private String phoneNumber;
+
     @JsonBackReference
     @OneToMany(mappedBy = "appUser", fetch = FetchType.EAGER)
     private Set<UserRole> userRoleSet;
