@@ -25,7 +25,6 @@ public class AppUserService implements IAppUserService {
         if (appUser == null) {
             throw new UsernameNotFoundException("User name or password is wrong");
         }
-
         List<GrantedAuthority> grantList = new ArrayList<>();
         for (UserRole userRole : appUser.getUserRoleSet()) {
             grantList.add(new SimpleGrantedAuthority(userRole.getAppRole().getName()));
@@ -35,5 +34,23 @@ public class AppUserService implements IAppUserService {
                 appUser.getPassword(),
                 grantList);
         return userDetails;
+    }
+
+    @Override
+    public AppUser findByUsername(String userName) {
+        return appUserRepository.findAppUserByName(userName);
+    }
+
+    @Override
+    public Boolean createNewAppUser(AppUser appUser, String roleAdmin) {
+        AppUser currentAppUser = appUserRepository.findAppUserByName(appUser.getUserName());
+        if (currentAppUser == null) {
+            Integer amount = appUserRepository.addNewAppUser(appUser);
+            Long roleId = appUserRepository.findAppRoleIdByName(roleAdmin);
+            AppUser appUserAfterCreate = appUserRepository.findAppUserByName(appUser.getUserName());
+            appUserRepository.addRoleForCustomer(appUserAfterCreate.getId(), roleId);
+            return amount > 0;
+        }
+        return false;
     }
 }

@@ -12,6 +12,9 @@ public class ValidateAppUser {
     private static final String CHAR_LENGTH_GREATER_FIFTY = "Số lượng ký tự bé hơn hoặc bằng 50";
     private static final String USER_NAME = "userName";
     private static final String PASSWORD = "password";
+    private static final String EMAIL = "email";
+    private static final String EMAIL_REGEX  = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+
     private static final String CONFIRM_PASSWORD = "confirmPassword";
 
     public static void checkValidateAppUserName(String name, Errors errors) {
@@ -33,29 +36,18 @@ public class ValidateAppUser {
             errors.rejectValue(PASSWORD, "", CHAR_LENGTH_LESS_THREE);
         }
     }
-
-    public static void checkValidateConfirmAppUserPassword(String confirmPassword, Errors errors) {
-        if (confirmPassword == null || confirmPassword.trim().length() == 0) {
-            errors.rejectValue(CONFIRM_PASSWORD, "", PASSWORD_NOT_EMPTY);
-        } else if (confirmPassword.length() > 50) {
-            errors.rejectValue(CONFIRM_PASSWORD, "", CHAR_LENGTH_GREATER_FIFTY);
-        } else if (confirmPassword.length() < 3) {
-            errors.rejectValue(CONFIRM_PASSWORD, "", CHAR_LENGTH_LESS_THREE);
+    public static void checkValidateAppUserEmail(String email, Errors errors) {
+        if (email == null) {
+            errors.rejectValue(EMAIL, "", "Vui lòng bổ sung email khách hàng");
+        } else if (email.trim().equals("")) {
+            errors.rejectValue(EMAIL, "", "Không được để trống email");
+        }else if (email.length() < 12) {
+            errors.rejectValue(EMAIL, "", "Email không đủ ký tự cho phép");
         }
-    }
-
-    public static boolean checkVerificationPassword(String password, String confirmPassword) {
-        return password.equals(confirmPassword);
-    }
-
-    public static String checkValidateOnlyAppUserName(String name) {
-        if (name == null || name.trim().length() == 0) {
-            return  NAME_NOT_EMPTY;
-        } else if (name.length() > 50) {
-            return  CHAR_LENGTH_GREATER_FIFTY;
-        } else if (name.length() < 3) {
-            return  CHAR_LENGTH_LESS_THREE;
+        else if (email.length() > 50) {
+            errors.rejectValue(EMAIL, "", "Email vượt quá ký tự cho phép");
+        } else if (!email.matches(EMAIL_REGEX)) {
+            errors.rejectValue(EMAIL, "", "Bạn nhập sai định dạng email!");
         }
-        return "";
     }
 }
