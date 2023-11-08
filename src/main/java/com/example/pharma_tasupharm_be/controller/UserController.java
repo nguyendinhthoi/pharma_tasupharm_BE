@@ -3,8 +3,10 @@ package com.example.pharma_tasupharm_be.controller;
 import com.example.pharma_tasupharm_be.config.JwtTokenUtil;
 import com.example.pharma_tasupharm_be.dto.AppUserDto;
 import com.example.pharma_tasupharm_be.dto.AppUserLoginDto;
+import com.example.pharma_tasupharm_be.model.customer.Customer;
 import com.example.pharma_tasupharm_be.model.user.AppUser;
 import com.example.pharma_tasupharm_be.model.user.JwtResponse;
+import com.example.pharma_tasupharm_be.service.customer.ICustomerService;
 import com.example.pharma_tasupharm_be.service.user.IAppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +39,8 @@ public class UserController {
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private ICustomerService customerService;
     private static final String LOGIN_FAILED = "Đăng nhập thất bại";
 
 
@@ -78,8 +82,27 @@ public class UserController {
         Boolean checkAddNewAppUser = appUserService.createNewAppUser(appUser, "ROLE_ADMIN");
         if (!Boolean.TRUE.equals(checkAddNewAppUser)) {
             return new ResponseEntity<>("Đăng kí thất bại, vui lòng chờ trong giây lát",
-                    HttpStatus.INTERNAL_SERVER_ERROR);
+                    HttpStatus.NOT_ACCEPTABLE);
         }
         return new ResponseEntity<>("Thêm mới thành công", HttpStatus.OK);
+    }
+
+    @GetMapping("/getUser/{name}")
+    public ResponseEntity<Object> getUser(@PathVariable String name) {
+        AppUser appUser = appUserService.findByUsername(name);
+        if (appUser != null) {
+            return new ResponseEntity<>(appUser, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Không tìm thấy user", HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/getCustomer/{idUser}")
+    public ResponseEntity<Object> getCustomer(@PathVariable Long idUser) {
+        Customer customer = customerService.findCustomerByIdUser(idUser);
+        if (customer != null) {
+            return new ResponseEntity<>(customer, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Không tìm thấy", HttpStatus.NOT_FOUND);
+        }
     }
 }
