@@ -15,14 +15,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
+
 import org.springframework.web.bind.annotation.*;
 
-import javax.security.auth.login.CredentialException;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -67,24 +66,30 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Object> register(@RequestBody AppUserDto appUserDto, BindingResult bindingResult) {
+    public ResponseEntity<Object> register(@Valid @RequestBody AppUserDto appUserDto, BindingResult bindingResult) {
         new AppUserDto().validate(appUserDto, bindingResult);
         Map<String, String> errorMap = new HashMap<>();
         if (bindingResult.hasErrors()) {
             bindingResult.getFieldErrors().stream()
                     .map(fieldError -> errorMap.put(fieldError.getField(), fieldError.getDefaultMessage()));
-            return new ResponseEntity<>(errorMap, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(errorMap, HttpStatus.OK);
         }
-        AppUser appUser = new AppUser();
-        appUser.setUserName(appUserDto.getUserName());
-        appUser.setPassword(passwordEncoder.encode(appUserDto.getPassword()));
-        appUser.setEmail(appUserDto.getEmail());
-        Boolean checkAddNewAppUser = appUserService.createNewAppUser(appUser, "ROLE_ADMIN");
-        if (!Boolean.TRUE.equals(checkAddNewAppUser)) {
-            return new ResponseEntity<>("Đăng kí thất bại, vui lòng chờ trong giây lát",
-                    HttpStatus.NOT_ACCEPTABLE);
+        AppUser appUser = appUserService.findByUsername(appUserDto.getUserName());
+        if (appUser != null) {
+            return new ResponseEntity<>("Tên đăng nhập đã tồn tại", HttpStatus.OK);
+        } else {
+            AppUser appUser1 = new AppUser();
+
+            appUser1.setUserName(appUserDto.getUserName());
+            appUser1.setPassword(passwordEncoder.encode(appUserDto.getPassword()));
+            appUser1.setEmail(appUserDto.getEmail());
+            Boolean checkAddNewAppUser = appUserService.createNewAppUser(appUser1, "ROLE_ADMIN");
+            if (!Boolean.TRUE.equals(checkAddNewAppUser)) {
+                return new ResponseEntity<>("Đăng kí thất bại, vui lòng chờ trong giây lát",
+                        HttpStatus.OK);
+            }
+            return new ResponseEntity<>(appUser1, HttpStatus.ACCEPTED);
         }
-        return new ResponseEntity<>("Thêm mới thành công", HttpStatus.OK);
     }
 
     @GetMapping("/getUser/{name}")
