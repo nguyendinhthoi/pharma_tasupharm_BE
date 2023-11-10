@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface IAppUserRepository extends JpaRepository<AppUser, Long> {
-    @Transactional
     @Query(value = "select * from app_user where user_name = :name", nativeQuery = true)
     AppUser findAppUserByName(@Param("name") String userName);
 
@@ -28,4 +27,7 @@ public interface IAppUserRepository extends JpaRepository<AppUser, Long> {
     @Modifying
     @Query(value = "insert into user_role (id_role,id_user) values (:idRole,:idUser)", nativeQuery = true)
     void addRoleForCustomer(@Param("idUser") Long id, @Param("idRole") Long roleId);
+
+    @Query(value = "select * from app_user where email = :name", nativeQuery = true)
+    AppUser findByEmail(@Param("name") String email);
 }

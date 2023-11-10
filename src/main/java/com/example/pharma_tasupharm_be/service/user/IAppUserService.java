@@ -7,4 +7,6 @@ public interface IAppUserService extends UserDetailsService {
     AppUser findByUsername(String userName);
 
     Boolean createNewAppUser(AppUser appUser, String roleAdmin);
+
+    AppUser findByEmail(String email);
 }

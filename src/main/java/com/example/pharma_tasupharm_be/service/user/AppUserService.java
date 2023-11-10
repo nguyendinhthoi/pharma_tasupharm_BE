@@ -53,4 +53,9 @@ public class AppUserService implements IAppUserService {
         }
         return false;
     }
+
+    @Override
+    public AppUser findByEmail(String email) {
+        return appUserRepository.findByEmail(email);
+    }
 }
