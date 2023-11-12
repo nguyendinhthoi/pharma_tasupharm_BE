@@ -1,4 +1,4 @@
-package com.example.pharma_tasupharm_be.dto;
+package com.example.pharma_tasupharm_be.dto.user;
 
 
 import org.springframework.security.core.GrantedAuthority;

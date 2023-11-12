@@ -1,4 +1,4 @@
-package com.example.pharma_tasupharm_be.dto;
+package com.example.pharma_tasupharm_be.dto.user;
 
 import com.example.pharma_tasupharm_be.model.user.UserRole;
 import com.fasterxml.jackson.annotation.JsonBackReference;

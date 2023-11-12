@@ -1,9 +1,9 @@
 package com.example.pharma_tasupharm_be.controller;
 
 import com.example.pharma_tasupharm_be.config.JwtTokenUtil;
-import com.example.pharma_tasupharm_be.dto.AppUserDto;
-import com.example.pharma_tasupharm_be.dto.AppUserLoginDto;
-import com.example.pharma_tasupharm_be.dto.ProductDto;
+import com.example.pharma_tasupharm_be.dto.user.AppUserDto;
+import com.example.pharma_tasupharm_be.dto.user.AppUserLoginDto;
+
 import com.example.pharma_tasupharm_be.model.customer.Customer;
 import com.example.pharma_tasupharm_be.model.user.AppUser;
 import com.example.pharma_tasupharm_be.model.user.JwtResponse;
@@ -11,9 +11,7 @@ import com.example.pharma_tasupharm_be.service.customer.ICustomerService;
 import com.example.pharma_tasupharm_be.service.user.IAppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,10 +19,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
-import org.springframework.security.config.annotation.web.configurers.RequestCacheConfigurer;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.access.RequestMatcherDelegatingAccessDeniedHandler;
 import org.springframework.validation.BindingResult;
 
 import org.springframework.web.bind.annotation.*;

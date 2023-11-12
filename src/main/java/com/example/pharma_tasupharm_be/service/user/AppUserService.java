@@ -1,6 +1,6 @@
 package com.example.pharma_tasupharm_be.service.user;
 
-import com.example.pharma_tasupharm_be.dto.JwtResponseUserDetails;
+import com.example.pharma_tasupharm_be.dto.user.JwtResponseUserDetails;
 import com.example.pharma_tasupharm_be.model.user.AppUser;
 import com.example.pharma_tasupharm_be.model.user.UserRole;
 import com.example.pharma_tasupharm_be.repository.user.IAppUserRepository;
