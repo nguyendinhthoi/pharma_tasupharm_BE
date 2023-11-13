@@ -9,4 +9,5 @@ public interface ProductDto {
     String getImage();
 
     Long getIdCategory();
+    Double getPriceSale();
 }

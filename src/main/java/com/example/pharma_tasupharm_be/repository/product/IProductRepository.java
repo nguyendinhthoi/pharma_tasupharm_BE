@@ -23,6 +23,7 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT p.id AS id, " +
             "       p.name AS name, " +
             "       p.price AS price," +
+            "       p.price_sale AS priceSale," +
             "       p.id_category AS idCategory, " +
             "       p.quantity AS quantity_in_stock, " +
             "       COALESCE(MIN(i.name), 'No Image') AS image, " +
@@ -40,6 +41,7 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT p.id AS id, " +
             "       p.name AS name, " +
             "       p.price AS price," +
+            "       p.price_sale AS priceSale," +
             "       p.id_category AS idCategory, " +
             "       COALESCE(MIN(i.name), 'No Image') AS image " +
             "FROM product p " +

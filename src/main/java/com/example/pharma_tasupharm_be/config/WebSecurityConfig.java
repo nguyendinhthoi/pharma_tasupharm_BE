@@ -50,56 +50,42 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-//        httpSecurity.csrf().disable().cors().and()//
-//                .authorizeRequests()//
-//                .antMatchers(
-//                        "/api/user/create/**",
-//                        "/api/admin/home/**",
-//                        "/api/user/confirm/**",
-//                        "/api/user/resetOTP/**",
-//                        "/api/user/login-by-username/**",
-//                        "/user/**"
-//                ).permitAll()
-//
-//                .antMatchers(
-//                        "/api/user/information/**",
-//                        "/api/user/logout/{userName}/**",
-//                        "/api/user/get-id-app-user/{userName}",
-//                        "/api/user/register/**",
-//                        "/api/user/confirmRegister/**",
-//                        "/api/admin/business/sales-report/**"
-//                ).hasAnyAuthority("ROLE_ADMIN", "ROLE_SALE", "ROLE_BUSINESS", "ROLE_WAREHOUSE")//
-//
-//
-//                .antMatchers(
-//                        "/api/admin/sale/**"
-//                ).hasAnyAuthority("ROLE_SALE", "ROLE_ADMIN")
-//
-//                .antMatchers(
-//                        "/api/admin/business/product/list/**",
-//                        "/api/admin/business/customer/list/**",
-//                        "/api/admin/business/type/list/**"
-//                ).hasAnyAuthority("ROLE_SALE", "ROLE_ADMIN", "ROLE_BUSINESS")
-//
-//
-//                .antMatchers(
-//                        "/api/admin/business/**"
-//                ).hasAnyAuthority("ROLE_BUSINESS", "ROLE_ADMIN")
-//
-//
-//                .antMatchers(
-//                        "/api/admin/ware/**"
-//                ).hasAnyAuthority("ROLE_WAREHOUSE", "ROLE_ADMIN")
-//
-//
-//                .anyRequest()//
-//                .authenticated()
-//                .and()//
-//                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)//
-//                .and().
-//                sessionManagement()//
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.csrf().disable().cors().and()//
+                .authorizeRequests()//
+                .antMatchers(
+               "/**"
+                ).permitAll()
+
+                .antMatchers(
+
+                ).hasAnyAuthority("ROLE_ADMIN", "ROLE_SALE", "ROLE_BUSINESS", "ROLE_WAREHOUSE")//
+
+
+                .antMatchers(
+                ).hasAnyAuthority("ROLE_SALE", "ROLE_ADMIN")
+
+                .antMatchers(
+
+                ).hasAnyAuthority("ROLE_SALE", "ROLE_ADMIN", "ROLE_BUSINESS")
+
+
+                .antMatchers(
+
+                ).hasAnyAuthority("ROLE_BUSINESS", "ROLE_ADMIN")
+
+
+                .antMatchers(
+                ).hasAnyAuthority("ROLE_WAREHOUSE", "ROLE_ADMIN")
+
+
+                .anyRequest()//
+                .authenticated()
+                .and()//
+                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)//
+                .and().
+                sessionManagement()//
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 //
 ////        httpSecurity
 ////                .authorizeRequests()
