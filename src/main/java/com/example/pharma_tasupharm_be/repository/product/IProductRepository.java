@@ -50,4 +50,16 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
             "ORDER BY p.id DESC " +
             "LIMIT 9", nativeQuery = true)
     List<ProductDto> findAllNewProduct();
+
+    @Query(value = "SELECT p.id AS id, " +
+            "       p.name AS name, " +
+            "       p.price AS price," +
+            "       p.price_sale AS priceSale," +
+            "       p.id_category AS idCategory, " +
+            "       MIN(i.name) AS image " +
+            "FROM product p " +
+            "LEFT JOIN image i ON p.id = i.id_product " +
+            "WHERE p.name like :name " +
+            "GROUP BY p.id ", nativeQuery = true)
+    Page<ProductDto> findAllByName(Pageable pageable,@Param("name") String s);
 }

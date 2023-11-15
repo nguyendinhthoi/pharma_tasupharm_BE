@@ -2,6 +2,7 @@ package com.example.pharma_tasupharm_be.service.product;
 
 import com.example.pharma_tasupharm_be.dto.product.ICategoriesDto;
 import com.example.pharma_tasupharm_be.dto.product.ProductDto;
+import com.example.pharma_tasupharm_be.model.product.Product;
 import com.example.pharma_tasupharm_be.repository.product.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,5 +34,15 @@ public class ProductService implements IProductService {
     @Override
     public List<ProductDto> findAllNewProduct() {
         return productRepository.findAllNewProduct();
+    }
+
+    @Override
+    public Page<ProductDto> findAllByName(Pageable pageable, String searchName) {
+        return productRepository.findAllByName(pageable,"%"+searchName+"%");
+    }
+
+    @Override
+    public Product findProductById(Long idProduct) {
+        return productRepository.findById(idProduct).orElse(null);
     }
 }
