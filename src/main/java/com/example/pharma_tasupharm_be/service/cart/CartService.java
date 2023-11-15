@@ -21,4 +21,10 @@ public class CartService implements ICartService{
     public List<ICartDto> getAllCart(Long idUser) {
         return cartRepository.getAllCart(idUser);
     }
+
+    @Override
+    public Integer deleteProduct(Long idUser, Long idProduct) {
+        Integer integer = cartRepository.deleteProduct(idUser,idProduct);
+        return integer;
+    }
 }

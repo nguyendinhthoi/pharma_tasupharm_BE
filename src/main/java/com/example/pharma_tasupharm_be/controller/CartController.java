@@ -50,4 +50,13 @@ public class CartController {
             return new ResponseEntity<>(cartDtos,HttpStatus.OK);
         }
     }
+    @PostMapping("/delete/{idUser}/{idProduct}")
+    public ResponseEntity<Object> deleteProduct(@PathVariable Long idUser,@PathVariable Long idProduct){
+        Integer integer = cartService.deleteProduct(idUser,idProduct);
+        if (integer > 0){
+            return new ResponseEntity<>("Bạn đã xóa thành công",HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>("Bạn đã xóa thất bại",HttpStatus.NOT_FOUND);
+        }
+    }
 }

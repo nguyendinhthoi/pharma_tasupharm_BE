@@ -9,4 +9,6 @@ public interface ICartService {
     void addToCart(Cart cart);
 
     List<ICartDto> getAllCart(Long idUser);
+
+    Integer deleteProduct(Long idUser, Long idProduct);
 }

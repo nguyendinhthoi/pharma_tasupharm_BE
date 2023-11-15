@@ -37,4 +37,9 @@ public interface ICartRepository extends JpaRepository<Cart,Long> {
             "GROUP BY " +
             "    c.id_user, c.id_product, c.quantity_order, p.name, p.price, p.price_sale;", nativeQuery = true)
     List<ICartDto> getAllCart(@Param("id") Long idUser);
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from cart where id_user = :idUser and id_product = :idProduct",nativeQuery = true)
+    Integer deleteProduct(@Param("idUser") Long idUser,@Param("idProduct") Long idProduct);
 }
