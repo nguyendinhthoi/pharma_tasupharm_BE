@@ -20,7 +20,8 @@ public interface ICartRepository extends JpaRepository<Cart,Long> {
     void addToCart(Cart cart);
     @Query(value = "SELECT " +
             "    c.id_user AS idUser, " +
-            "    c.id_product AS idProduct, " +
+            "    c.id_product AS idProduct," +
+            "    c.quantity_order as quantity, " +
             "    p.name, " +
             "    p.price, " +
             "    p.price_sale AS priceSale, " +
@@ -34,6 +35,6 @@ public interface ICartRepository extends JpaRepository<Cart,Long> {
             "WHERE " +
             "        c.id_user = :id " +
             "GROUP BY " +
-            "    c.id_user, c.id_product, p.name, p.price, p.price_sale;", nativeQuery = true)
+            "    c.id_user, c.id_product, c.quantity_order, p.name, p.price, p.price_sale;", nativeQuery = true)
     List<ICartDto> getAllCart(@Param("id") Long idUser);
 }

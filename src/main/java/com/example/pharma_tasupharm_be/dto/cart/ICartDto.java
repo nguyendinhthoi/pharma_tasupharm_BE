@@ -7,5 +7,6 @@ public interface ICartDto {
     Double getPrice();
     Double getPriceSale();
     String getImage();
+    Integer getQuantity();
 
 }
