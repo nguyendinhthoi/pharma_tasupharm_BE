@@ -22,7 +22,8 @@ public interface ICartRepository extends JpaRepository<Cart,Long> {
     @Query(value = "SELECT " +
             "    c.id_user AS idUser, " +
             "    c.id_product AS idProduct," +
-            "    c.quantity_order as quantity, " +
+            "    c.quantity_order as quantity," +
+            "    p.quantity as maxQuantity, " +
             "    p.name, " +
             "    p.price, " +
             "    p.price_sale AS priceSale, " +

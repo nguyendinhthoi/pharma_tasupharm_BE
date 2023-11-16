@@ -8,5 +8,6 @@ public interface ICartDto {
     Double getPriceSale();
     String getImage();
     Integer getQuantity();
+    Integer getMaxQuantity();
 
 }

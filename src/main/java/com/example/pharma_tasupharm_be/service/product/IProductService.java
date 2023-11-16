@@ -20,4 +20,5 @@ public interface IProductService{
     Page<ProductDto> findAllByName(Pageable pageable, String searchName);
 
     Product findProductById(Long idProduct);
+
 }

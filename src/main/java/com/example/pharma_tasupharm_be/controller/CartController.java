@@ -29,6 +29,9 @@ public class CartController {
         Cart cart = new Cart();
         Product product = productService.findProductById(idProduct);
         AppUser appUser = appUserService.findUserById(idUser);
+        if (product.getQuantity() <= 1){
+            return new ResponseEntity<>("Đã hết hàng", HttpStatus.NOT_FOUND);
+        }
         if (product == null){
             return new ResponseEntity<>("Không tìm thấy sản phẩm", HttpStatus.NOT_FOUND);
         }
@@ -54,5 +57,38 @@ public class CartController {
     public ResponseEntity<Object> deleteProduct(@PathVariable Long idUser,@PathVariable Long idProduct){
         cartService.deleteProduct(idUser,idProduct);
         return new ResponseEntity<>("Bạn đã xóa thành công",HttpStatus.OK);
+    }
+    @PostMapping("/updateQuantity/{idUser}/{idProduct}")
+    public ResponseEntity<String> findProductAndChangeQuantity(
+            @RequestParam(name = "quantity", defaultValue = "1",required = false) Integer quantity,
+            @PathVariable Long idUser,
+            @PathVariable Long idProduct
+    ){
+        if (idUser != null && idProduct != null){
+            Product product = productService.findProductById(idProduct);
+            AppUser appUser = appUserService.findUserById(idUser);
+            if (product == null){
+                return new ResponseEntity<>("Không tìm thấy sản phẩm", HttpStatus.NOT_FOUND);
+            }
+            if (appUser == null){
+                return new ResponseEntity<>("Không tìm thấy tài khoản",HttpStatus.NOT_FOUND);
+            }
+            if (quantity == null){
+                return new ResponseEntity<>("Số lượng không được để trống",HttpStatus.BAD_REQUEST);
+            }
+            if (quantity <= 0){
+                return new ResponseEntity<>("Số lượng phải lớn hơn 0",HttpStatus.BAD_REQUEST);
+            }
+            if (quantity > product.getQuantity()){
+                return new ResponseEntity<>("Số lượng trong kho không đủ",HttpStatus.BAD_REQUEST);
+            }
+            Cart cart = new Cart();
+            cart.setProduct(product);
+            cart.setAppUser(appUser);
+            cart.setQuantityOrder(quantity);
+            cartService.addToCart(cart);
+            return new ResponseEntity<>("Bạn đã thêm sản phẩm vào đơn hàng",HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Không tìm thấy ID",HttpStatus.NOT_FOUND);
     }
 }
