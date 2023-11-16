@@ -23,8 +23,7 @@ public class CartService implements ICartService{
     }
 
     @Override
-    public Integer deleteProduct(Long idUser, Long idProduct) {
-        Integer integer = cartRepository.deleteProduct(idUser,idProduct);
-        return integer;
+    public void deleteProduct(Long idUser, Long idProduct) {
+        cartRepository.deleteProduct(idUser,idProduct);
     }
 }

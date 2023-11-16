@@ -42,5 +42,5 @@ public interface ICartRepository extends JpaRepository<Cart,Long> {
     @Modifying
     @Transactional
     @Query(value = "delete from cart where id_user = :idUser and id_product = :idProduct",nativeQuery = true)
-    Integer deleteProduct(@Param("idUser") Long idUser,@Param("idProduct") Long idProduct);
+    void deleteProduct(@Param("idUser") Long idUser,@Param("idProduct") Long idProduct);
 }
