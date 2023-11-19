@@ -16,7 +16,7 @@ public class OrderDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Double priceOrder;
-    private Double quantity;
+    private Integer quantity;
     @ManyToOne
     @JoinColumn(name = "idOrder", referencedColumnName = "id")
     private Order order;

@@ -2,9 +2,7 @@ package com.example.pharma_tasupharm_be.controller;
 
 import com.example.pharma_tasupharm_be.dto.product.ICategoriesDto;
 import com.example.pharma_tasupharm_be.dto.product.ProductDto;
-import com.example.pharma_tasupharm_be.model.order.Cart;
-import com.example.pharma_tasupharm_be.model.product.Product;
-import com.example.pharma_tasupharm_be.model.user.AppUser;
+
 import com.example.pharma_tasupharm_be.service.product.IProductService;
 import com.example.pharma_tasupharm_be.service.user.IAppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +21,6 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private IProductService productService;
-    @Autowired
-    private IAppUserService appUserService;
 
     @GetMapping("/listBestSeller")
     public ResponseEntity<List<ProductDto>> getListBestSeller() {

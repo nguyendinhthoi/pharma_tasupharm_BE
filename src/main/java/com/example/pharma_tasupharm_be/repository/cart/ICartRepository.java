@@ -15,11 +15,12 @@ import java.util.List;
 public interface ICartRepository extends JpaRepository<Cart,Long> {
     @Modifying
     @Transactional
-    @Query(value = "insert into cart (quantity_order,id_user,id_product) " +
-            "values (:#{#cart.quantityOrder},:#{#cart.appUser.id},:#{#cart.product.id}) " +
+    @Query(value = "insert into cart (quantity_order,id_user,id_product,payment_status) " +
+            "values (:#{#cart.quantityOrder},:#{#cart.appUser.id},:#{#cart.product.id},0) " +
             "on duplicate key update quantity_order = :#{#cart.quantityOrder}",nativeQuery = true)
     void addToCart(Cart cart);
     @Query(value = "SELECT " +
+            "    c.id AS idCart, " +
             "    c.id_user AS idUser, " +
             "    c.id_product AS idProduct," +
             "    c.quantity_order as quantity," +
@@ -37,11 +38,16 @@ public interface ICartRepository extends JpaRepository<Cart,Long> {
             "WHERE " +
             "        c.id_user = :id " +
             "GROUP BY " +
-            "    c.id_user, c.id_product, c.quantity_order, p.name, p.price, p.price_sale;", nativeQuery = true)
+            "    c.id , c.id_user, c.id_product, c.quantity_order, p.name, p.price, p.price_sale;", nativeQuery = true)
     List<ICartDto> getAllCart(@Param("id") Long idUser);
 
     @Modifying
     @Transactional
     @Query(value = "delete from cart where id_user = :idUser and id_product = :idProduct",nativeQuery = true)
     void deleteProduct(@Param("idUser") Long idUser,@Param("idProduct") Long idProduct);
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from cart where id_user = :id",nativeQuery = true)
+    void deleteCart(@Param("id") Long userId);
 }

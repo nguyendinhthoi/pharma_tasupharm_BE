@@ -11,4 +11,6 @@ public interface ICartService {
     List<ICartDto> getAllCart(Long idUser);
 
     void deleteProduct(Long idUser, Long idProduct);
+
+
 }

@@ -2,9 +2,12 @@ package com.example.pharma_tasupharm_be.service.cart;
 
 import com.example.pharma_tasupharm_be.dto.cart.ICartDto;
 import com.example.pharma_tasupharm_be.model.order.Cart;
+
 import com.example.pharma_tasupharm_be.repository.cart.ICartRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
@@ -12,6 +15,8 @@ import java.util.List;
 public class CartService implements ICartService{
     @Autowired
     private ICartRepository cartRepository;
+
+
     @Override
     public void addToCart(Cart cart) {
         cartRepository.addToCart(cart);
@@ -26,4 +31,6 @@ public class CartService implements ICartService{
     public void deleteProduct(Long idUser, Long idProduct) {
         cartRepository.deleteProduct(idUser,idProduct);
     }
+
+
 }

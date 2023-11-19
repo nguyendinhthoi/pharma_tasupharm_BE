@@ -1,6 +1,7 @@
 package com.example.pharma_tasupharm_be.dto.cart;
 
 public interface ICartDto {
+    Long getIdCart();
     Long getIdUser();
     Long getIdProduct();
     String getName();
