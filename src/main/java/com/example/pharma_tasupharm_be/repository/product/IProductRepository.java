@@ -1,7 +1,8 @@
 package com.example.pharma_tasupharm_be.repository.product;
 
 import com.example.pharma_tasupharm_be.dto.product.ICategoriesDto;
-import com.example.pharma_tasupharm_be.dto.product.ProductDto;
+import com.example.pharma_tasupharm_be.dto.product.IImageDto;
+import com.example.pharma_tasupharm_be.dto.product.IProductDto;
 import com.example.pharma_tasupharm_be.model.product.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +21,7 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
             "from image as i " +
             "join product as p on p.id = i.id_product " +
             "where p.name like :name", nativeQuery = true)
-    Page<ProductDto> findAllProduct(Pageable pageable, @Param("name") String s);
+    Page<IProductDto> findAllProduct(Pageable pageable, @Param("name") String s);
 
     @Query(value = "SELECT p.id AS id, " +
             "       p.name AS name, " +
@@ -36,7 +37,7 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
             "GROUP BY p.id, p.name, p.price, p.quantity " +
             "ORDER BY total_quantity_sold DESC " +
             "LIMIT 6", nativeQuery = true)
-    List<ProductDto> findAllBestSeller();
+    List<IProductDto> findAllBestSeller();
 
     @Query(value = "SELECT c.id as id, c.name as name FROM category c", nativeQuery = true)
     List<ICategoriesDto> findAllCategories();
@@ -51,7 +52,7 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
             "GROUP BY p.id " +
             "ORDER BY p.id DESC " +
             "LIMIT 9", nativeQuery = true)
-    List<ProductDto> findAllNewProduct();
+    List<IProductDto> findAllNewProduct();
 
     @Query(value = "SELECT p.id AS id, " +
             "       p.name AS name, " +
@@ -63,10 +64,21 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
             "LEFT JOIN image i ON p.id = i.id_product " +
             "WHERE p.name like :name " +
             "GROUP BY p.id ", nativeQuery = true)
-    Page<ProductDto> findAllByName(Pageable pageable,@Param("name") String s);
+    Page<IProductDto> findAllByName(Pageable pageable, @Param("name") String s);
 
     @Modifying
     @Transactional
     @Query(value = "update product set quantity = :quantity where id = :id", nativeQuery = true)
     void updateQuantityOfProduct(@Param("id") Long id,@Param("quantity") Integer quantityOfProductAfterPayment);
+
+
+    @Query(value = "SELECT id, name from image where id_product = :id", nativeQuery = true)
+    List<IImageDto> findImageByProduct(@Param("id") Long idProduct);
+
+    @Query(value = "select p.id, p.name as name, p.price as price , MIN(i.name) AS image " +
+            "from image as i " +
+            "join product as p on p.id = i.id_product " +
+            "where p.id_category = :id " +
+            "GROUP BY p.id", nativeQuery = true)
+    List<IProductDto> findAllByCategory(@Param("id") Long id);
 }
