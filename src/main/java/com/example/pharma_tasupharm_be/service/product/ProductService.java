@@ -2,6 +2,7 @@ package com.example.pharma_tasupharm_be.service.product;
 
 import com.example.pharma_tasupharm_be.dto.product.ICategoriesDto;
 import com.example.pharma_tasupharm_be.dto.product.IImageDto;
+import com.example.pharma_tasupharm_be.dto.product.IProductDetail;
 import com.example.pharma_tasupharm_be.dto.product.IProductDto;
 import com.example.pharma_tasupharm_be.model.product.Product;
 import com.example.pharma_tasupharm_be.repository.product.IProductRepository;
@@ -57,4 +58,18 @@ public class ProductService implements IProductService {
         return productRepository.findAllByCategory(id);
     }
 
+    @Override
+    public Product findProductInCart(Long idProduct) {
+        return productRepository.findProductInCart(idProduct);
+    }
+
+    @Override
+    public IProductDetail findProductDtoById(Long idProduct) {
+        return productRepository.findProductDtoById(idProduct);
+    }
+
+    @Override
+    public Page<IProductDto> findPageByCategory(Pageable pageable, Long idCategory) {
+        return productRepository.findProductByCategory(pageable,idCategory);
+    }
 }

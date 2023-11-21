@@ -13,6 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DetailResponse {
-    private Product product;
+    private IProductDetail product;
     private List<IImageDto> images;
 }

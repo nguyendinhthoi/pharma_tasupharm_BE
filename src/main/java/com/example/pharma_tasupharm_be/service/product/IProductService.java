@@ -2,6 +2,7 @@ package com.example.pharma_tasupharm_be.service.product;
 
 import com.example.pharma_tasupharm_be.dto.product.ICategoriesDto;
 import com.example.pharma_tasupharm_be.dto.product.IImageDto;
+import com.example.pharma_tasupharm_be.dto.product.IProductDetail;
 import com.example.pharma_tasupharm_be.dto.product.IProductDto;
 import com.example.pharma_tasupharm_be.model.product.Product;
 import org.springframework.data.domain.Page;
@@ -25,4 +26,10 @@ public interface IProductService{
     List<IImageDto> findImageByProduct(Long idProduct);
 
     List<IProductDto> findAllByCategory(Long id);
+
+    Product findProductInCart(Long idProduct);
+
+    IProductDetail findProductDtoById(Long idProduct);
+
+    Page<IProductDto> findPageByCategory(Pageable pageable, Long idCategory);
 }

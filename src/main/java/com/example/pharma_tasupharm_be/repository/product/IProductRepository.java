@@ -2,6 +2,7 @@ package com.example.pharma_tasupharm_be.repository.product;
 
 import com.example.pharma_tasupharm_be.dto.product.ICategoriesDto;
 import com.example.pharma_tasupharm_be.dto.product.IImageDto;
+import com.example.pharma_tasupharm_be.dto.product.IProductDetail;
 import com.example.pharma_tasupharm_be.dto.product.IProductDto;
 import com.example.pharma_tasupharm_be.model.product.Product;
 import org.springframework.data.domain.Page;
@@ -81,4 +82,39 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
             "where p.id_category = :id " +
             "GROUP BY p.id", nativeQuery = true)
     List<IProductDto> findAllByCategory(@Param("id") Long id);
+
+    @Query(value = "select * from cart where id_product = :id",nativeQuery = true)
+    Product findProductInCart(@Param("id") Long idProduct);
+    @Query(value = "SELECT p.id AS id, " +
+            "       p.name AS name, " +
+            "       p.price AS price," +
+            "       p.price_sale AS priceSale," +
+            "       p.quantity AS quantity, " +
+            "       p.description AS description, " +
+            "       p.ingredients AS ingredients, " +
+            "       p.medical_uses AS medicalUses, " +
+            "       p.how_to_use AS howToUse, " +
+            "       p.intended_users AS intendedUsers, " +
+            "       p.precautions AS precautions, " +
+            "       p.storage AS storage, " +
+            "       p.distribution_facility AS distributionFacility, " +
+            "       p.manufactured_by AS manufacturedBy, " +
+            "       p.caution AS caution, " +
+            "       p.packaging AS packaging, " +
+            "       p.id_category AS idCategory, " +
+            "       c.name AS nameCategory, " +
+            "       COALESCE(MIN(i.name), 'No Image') AS image " +
+            "FROM product p " +
+            "JOIN image i ON p.id = i.id_product " +
+            "JOIN category c ON p.id_category = c.id " +
+            "where p.id = :id " +
+            "GROUP BY p.id ", nativeQuery = true)
+    IProductDetail findProductDtoById(@Param("id") Long idProduct);
+
+    @Query(value = "select p.id, p.name as name, p.price as price , MIN(i.name) AS image " +
+            "from image as i " +
+            "join product as p on p.id = i.id_product " +
+            "where p.id_category = :id " +
+            "GROUP BY p.id", nativeQuery = true)
+    Page<IProductDto> findProductByCategory(Pageable pageable,@Param("id") Long idCategory);
 }

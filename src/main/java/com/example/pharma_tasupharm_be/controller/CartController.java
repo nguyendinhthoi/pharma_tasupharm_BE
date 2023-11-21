@@ -28,7 +28,11 @@ public class CartController {
     public ResponseEntity<Object> addToCart(@PathVariable Long idProduct, @PathVariable Long idUser){
         Cart cart = new Cart();
         Product product = productService.findProductById(idProduct);
+        Product product1 = productService.findProductInCart(idProduct);
         AppUser appUser = appUserService.findUserById(idUser);
+        if (product1 != null){
+            return new ResponseEntity<>("Sản phẩm đã có trong giỏ hàng", HttpStatus.NOT_FOUND);
+        }
         if (product.getQuantity() <= 1){
             return new ResponseEntity<>("Đã hết hàng", HttpStatus.NOT_FOUND);
         }

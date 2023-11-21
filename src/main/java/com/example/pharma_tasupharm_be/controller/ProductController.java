@@ -1,9 +1,6 @@
 package com.example.pharma_tasupharm_be.controller;
 
-import com.example.pharma_tasupharm_be.dto.product.DetailResponse;
-import com.example.pharma_tasupharm_be.dto.product.ICategoriesDto;
-import com.example.pharma_tasupharm_be.dto.product.IImageDto;
-import com.example.pharma_tasupharm_be.dto.product.IProductDto;
+import com.example.pharma_tasupharm_be.dto.product.*;
 
 import com.example.pharma_tasupharm_be.model.product.Product;
 import com.example.pharma_tasupharm_be.service.product.IProductService;
@@ -63,23 +60,30 @@ public class ProductController {
     }
     @GetMapping("/detail/{idProduct}")
     public ResponseEntity<Object> getProduct(@PathVariable Long idProduct){
-        Product product = productService.findProductById(idProduct);
+        IProductDetail product = productService.findProductDtoById(idProduct);
         List<IImageDto> images = productService.findImageByProduct(idProduct);
 
         DetailResponse detailResponse = new DetailResponse();
         detailResponse.setProduct(product);
         detailResponse.setImages(images);
-        if (product == null){
-            return new ResponseEntity<>("Không tìm thấy sản phẩm",HttpStatus.NOT_FOUND);
-        }
-        if (images.isEmpty()){
-            return new ResponseEntity<>("Không tìm thấy hình ảnh",HttpStatus.NOT_FOUND);
+        if (product == null || images.isEmpty()){
+            return new ResponseEntity<>("Không tìm thấy sản phẩm hoặc không tìm thấy hình ảnh",HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(detailResponse,HttpStatus.OK);
     }
     @GetMapping("/categoryByProduct/{id}")
     public ResponseEntity<Object> getProductWithCategory(@PathVariable Long id){
         List<IProductDto> productDtos = productService.findAllByCategory(id);
+        if (productDtos.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(productDtos,HttpStatus.OK);
+    }
+    @GetMapping("/category/{idCategory}")
+    public ResponseEntity<Object> getPageCategory(@PathVariable Long idCategory,
+                                                  @RequestParam(name = "page",defaultValue = "0" , required = false) Integer page){
+        Pageable pageable = PageRequest.of(page,6);
+        Page<IProductDto> productDtos = productService.findPageByCategory(pageable,idCategory);
         if (productDtos.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
