@@ -18,11 +18,15 @@ import java.util.List;
 
 @Repository
 public interface IProductRepository extends JpaRepository<Product, Long> {
-    @Query(value = "select p.name as name, p.price as price , i.name as image " +
-            "from image as i " +
-            "join product as p on p.id = i.id_product " +
-            "where p.name like :name", nativeQuery = true)
-    Page<IProductDto> findAllProduct(Pageable pageable, @Param("name") String s);
+    @Query(value = "SELECT p.id, p.name AS name,c.name as nameCategory, p.price AS price, p.price_sale as priceSale, MIN(i.name) AS image " +
+            "FROM image AS i " +
+            "JOIN product AS p " +
+            "ON p.id = i.id_product " +
+            "JOIN category AS c " +
+            "ON p.id_category = c.id " +
+            "WHERE p.price BETWEEN :min AND :max " +
+            "GROUP BY p.id", nativeQuery = true)
+    Page<IProductDto> findAllProduct(Pageable pageable,@Param("min") double min,@Param("max") double max);
 
     @Query(value = "SELECT p.id AS id, " +
             "       p.name AS name, " +
@@ -111,10 +115,15 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
             "GROUP BY p.id ", nativeQuery = true)
     IProductDetail findProductDtoById(@Param("id") Long idProduct);
 
-    @Query(value = "select p.id, p.name as name, p.price as price , MIN(i.name) AS image " +
-            "from image as i " +
-            "join product as p on p.id = i.id_product " +
-            "where p.id_category = :id " +
+
+    @Query(value = "SELECT p.id, p.name AS name,c.name as nameCategory, p.price AS price, p.price_sale as priceSale, MIN(i.name) AS image " +
+            "FROM image AS i " +
+            "JOIN product AS p " +
+            "ON p.id = i.id_product " +
+            "JOIN category AS c " +
+            "ON p.id_category = c.id " +
+            "WHERE p.id_category = :id " +
+            "AND p.price BETWEEN :min AND :max " +
             "GROUP BY p.id", nativeQuery = true)
-    Page<IProductDto> findProductByCategory(Pageable pageable,@Param("id") Long idCategory);
+    Page<IProductDto> findProductByCategory(Pageable pageable, @Param("id") Long idCategory,@Param("min") double min,@Param("max") double max);
 }

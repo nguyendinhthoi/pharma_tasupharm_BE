@@ -2,12 +2,12 @@ package com.example.pharma_tasupharm_be.controller;
 
 import com.example.pharma_tasupharm_be.dto.product.*;
 
-import com.example.pharma_tasupharm_be.model.product.Product;
 import com.example.pharma_tasupharm_be.service.product.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -81,9 +81,46 @@ public class ProductController {
     }
     @GetMapping("/category/{idCategory}")
     public ResponseEntity<Object> getPageCategory(@PathVariable Long idCategory,
-                                                  @RequestParam(name = "page",defaultValue = "0" , required = false) Integer page){
-        Pageable pageable = PageRequest.of(page,6);
-        Page<IProductDto> productDtos = productService.findPageByCategory(pageable,idCategory);
+                                                  @RequestParam(name = "page",defaultValue = "0" , required = false) Integer page,
+                                                  @RequestParam(name = "value",defaultValue = "",required = false) List<Integer> value,
+                                                  @RequestParam(name = "choosePrice",defaultValue = "",required = false) String choosePrice){
+        Sort sort;
+        switch (choosePrice){
+            case "desc":
+                sort = Sort.by("price").descending();
+                break;
+            case "asc":
+                sort = Sort.by("price").ascending();
+                break;
+            default:
+                sort = Sort.by("price");
+                break;
+        }
+        Pageable pageable = PageRequest.of(page,6,sort);
+        Page<IProductDto> productDtos = productService.findPageByCategory(pageable,idCategory,value);
+        if (productDtos.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(productDtos,HttpStatus.OK);
+    }
+    @GetMapping("/shop")
+    public ResponseEntity<Object> getAllProduct(  @RequestParam(name = "page",defaultValue = "0" , required = false) Integer page,
+                                                  @RequestParam(name = "value",defaultValue = "",required = false) List<Integer> value,
+                                                  @RequestParam(name = "choosePrice",defaultValue = "",required = false) String choosePrice){
+        Sort sort;
+        switch (choosePrice){
+            case "desc":
+                sort = Sort.by("price").descending();
+                break;
+            case "asc":
+                sort = Sort.by("price").ascending();
+                break;
+            default:
+                sort = Sort.by("price");
+                break;
+        }
+        Pageable pageable = PageRequest.of(page,6,sort);
+        Page<IProductDto> productDtos = productService.findAllProduct(pageable ,value);
         if (productDtos.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

@@ -19,8 +19,10 @@ public class ProductService implements IProductService {
     private IProductRepository productRepository;
 
     @Override
-    public Page<IProductDto> findAllProduct(Pageable pageable, String name) {
-        return productRepository.findAllProduct(pageable, "%" + name + "%");
+    public Page<IProductDto> findAllProduct(Pageable pageable, List<Integer> value) {
+        double min = value.get(0);
+        double max = value.get(1);
+        return productRepository.findAllProduct(pageable,min,max);
     }
 
     @Override
@@ -69,7 +71,9 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Page<IProductDto> findPageByCategory(Pageable pageable, Long idCategory) {
-        return productRepository.findProductByCategory(pageable,idCategory);
+    public Page<IProductDto> findPageByCategory(Pageable pageable, Long idCategory, List<Integer> value) {
+        double min = value.get(0);
+        double max = value.get(1);
+        return productRepository.findProductByCategory(pageable,idCategory,min,max);
     }
 }

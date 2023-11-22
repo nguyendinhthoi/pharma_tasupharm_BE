@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface IProductService{
-    Page<IProductDto> findAllProduct(Pageable pageable, String name);
+    Page<IProductDto> findAllProduct(Pageable pageable, List<Integer> value);
 
     List<IProductDto> findAllBestSeller();
 
@@ -31,5 +31,5 @@ public interface IProductService{
 
     IProductDetail findProductDtoById(Long idProduct);
 
-    Page<IProductDto> findPageByCategory(Pageable pageable, Long idCategory);
+    Page<IProductDto> findPageByCategory(Pageable pageable, Long idCategory, List<Integer> value);
 }
