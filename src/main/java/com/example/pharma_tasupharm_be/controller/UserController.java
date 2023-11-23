@@ -1,6 +1,7 @@
 package com.example.pharma_tasupharm_be.controller;
 
 import com.example.pharma_tasupharm_be.config.JwtTokenUtil;
+import com.example.pharma_tasupharm_be.dto.customer.CustomerDto;
 import com.example.pharma_tasupharm_be.dto.user.AppUserDto;
 import com.example.pharma_tasupharm_be.dto.user.AppUserLoginDto;
 
@@ -9,6 +10,7 @@ import com.example.pharma_tasupharm_be.model.user.AppUser;
 import com.example.pharma_tasupharm_be.model.user.JwtResponse;
 import com.example.pharma_tasupharm_be.service.customer.ICustomerService;
 import com.example.pharma_tasupharm_be.service.user.IAppUserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @CrossOrigin("*")
@@ -93,6 +96,9 @@ public class UserController {
                 return new ResponseEntity<>("Đăng kí thất bại, vui lòng chờ trong giây lát",
                         HttpStatus.OK);
             }
+            Customer customer = new Customer();
+
+            customerService.createCustomer(customer);
             return new ResponseEntity<>(appUser1, HttpStatus.ACCEPTED);
         }
     }
@@ -114,5 +120,18 @@ public class UserController {
         } else {
             return new ResponseEntity<>("Không tìm thấy", HttpStatus.NOT_FOUND);
         }
+    }
+    @PostMapping("/editInfo")
+    public ResponseEntity<Object> editInfoCus(@Valid @RequestBody CustomerDto customerDto,BindingResult bindingResult){
+        new CustomerDto().validate(customerDto, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(bindingResult.getAllErrors().toString(), HttpStatus.NOT_ACCEPTABLE);
+        }
+        AppUser appUser = appUserService.findUserById(customerDto.getUserId());
+        Customer customer = new Customer();
+        BeanUtils.copyProperties(customerDto, customer);
+        customer.setAppUser(appUser);
+        customerService.updateCustomer(customer);
+        return new ResponseEntity<>("Cập nhật thành công",HttpStatus.OK);
     }
 }

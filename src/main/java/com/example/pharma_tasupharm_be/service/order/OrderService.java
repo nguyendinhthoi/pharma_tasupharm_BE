@@ -1,7 +1,9 @@
 package com.example.pharma_tasupharm_be.service.order;
 
 import com.example.pharma_tasupharm_be.dto.cart.ICartDto;
+import com.example.pharma_tasupharm_be.dto.order.IDetailHistory;
 import com.example.pharma_tasupharm_be.dto.order.IOrderDetailDto;
+import com.example.pharma_tasupharm_be.dto.order.IOrderHistory;
 import com.example.pharma_tasupharm_be.model.order.Order;
 import com.example.pharma_tasupharm_be.model.order.OrderDetail;
 import com.example.pharma_tasupharm_be.model.product.Product;
@@ -87,5 +89,15 @@ public class OrderService implements IOrderService{
             total += orderDetail.getPriceProduct() * orderDetail.getQuantity();
         }
         orderRepository.updateTotalMoney(total,order.getId());
+    }
+
+    @Override
+    public List<IOrderHistory> getAllHistory(Long userId) {
+        return orderRepository.findAllHistory(userId);
+    }
+
+    @Override
+    public List<IDetailHistory> getAllOrderDetail(Long id) {
+        return orderRepository.findDetailHistory(id);
     }
 }

@@ -1,7 +1,6 @@
 package com.example.pharma_tasupharm_be.repository.user;
 
 import com.example.pharma_tasupharm_be.model.user.AppUser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -30,4 +29,7 @@ public interface IAppUserRepository extends JpaRepository<AppUser, Long> {
 
     @Query(value = "select * from app_user where email = :name", nativeQuery = true)
     AppUser findByEmail(@Param("name") String email);
+
+    @Query(value = "select * from app_user order by id desc limit 1", nativeQuery = true)
+    AppUser findAppUserNewest();
 }
