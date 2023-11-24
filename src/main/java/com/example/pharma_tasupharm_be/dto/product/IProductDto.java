@@ -11,4 +11,5 @@ public interface IProductDto {
 
     Long getIdCategory();
     Double getPriceSale();
+    Integer getQuantity();
 }

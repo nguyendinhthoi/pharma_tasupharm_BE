@@ -18,7 +18,7 @@ import java.util.List;
 
 @Repository
 public interface IProductRepository extends JpaRepository<Product, Long> {
-    @Query(value = "SELECT p.id, p.name AS name,c.name as nameCategory, p.price AS price, p.price_sale as priceSale, MIN(i.name) AS image " +
+    @Query(value = "SELECT p.id,p.quantity ,p.name AS name,c.name as nameCategory, p.price AS price, p.price_sale as priceSale, MIN(i.name) AS image " +
             "FROM image AS i " +
             "JOIN product AS p " +
             "ON p.id = i.id_product " +
@@ -33,7 +33,7 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
             "       p.price AS price," +
             "       p.price_sale AS priceSale," +
             "       p.id_category AS idCategory, " +
-            "       p.quantity AS quantity_in_stock, " +
+            "       p.quantity, " +
             "       COALESCE(MIN(i.name), 'No Image') AS image, " +
             "       COALESCE(SUM(od.quantity), 0) AS total_quantity_sold " +
             "FROM product p " +
@@ -50,7 +50,8 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
             "       p.name AS name, " +
             "       p.price AS price," +
             "       p.price_sale AS priceSale," +
-            "       p.id_category AS idCategory, " +
+            "       p.id_category AS idCategory," +
+            "       p.quantity ," +
             "       COALESCE(MIN(i.name), 'No Image') AS image " +
             "FROM product p " +
             "LEFT JOIN image i ON p.id = i.id_product " +
@@ -63,7 +64,8 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
             "       p.name AS name, " +
             "       p.price AS price," +
             "       p.price_sale AS priceSale," +
-            "       p.id_category AS idCategory, " +
+            "       p.id_category AS idCategory," +
+            "       p.quantity , " +
             "       MIN(i.name) AS image " +
             "FROM product p " +
             "LEFT JOIN image i ON p.id = i.id_product " +
@@ -80,7 +82,7 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT id, name from image where id_product = :id", nativeQuery = true)
     List<IImageDto> findImageByProduct(@Param("id") Long idProduct);
 
-    @Query(value = "select p.id, p.name as name, p.price as price , MIN(i.name) AS image " +
+    @Query(value = "select p.id,p.quantity, p.name as name, p.price as price , MIN(i.name) AS image " +
             "from image as i " +
             "join product as p on p.id = i.id_product " +
             "where p.id_category = :id " +
@@ -116,7 +118,7 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     IProductDetail findProductDtoById(@Param("id") Long idProduct);
 
 
-    @Query(value = "SELECT p.id, p.name AS name,c.name as nameCategory, p.price AS price, p.price_sale as priceSale, MIN(i.name) AS image " +
+    @Query(value = "SELECT p.id,p.quantity, p.name AS name,c.name as nameCategory, p.price AS price, p.price_sale as priceSale, MIN(i.name) AS image " +
             "FROM image AS i " +
             "JOIN product AS p " +
             "ON p.id = i.id_product " +

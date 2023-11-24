@@ -15,8 +15,8 @@ import java.util.List;
 public interface ICartRepository extends JpaRepository<Cart,Long> {
     @Modifying
     @Transactional
-    @Query(value = "insert into cart (quantity_order,id_user,id_product,payment_status) " +
-            "values (:#{#cart.quantityOrder},:#{#cart.appUser.id},:#{#cart.product.id},0) " +
+    @Query(value = "insert into cart (quantity_order,id_user,id_product) " +
+            "values (:#{#cart.quantityOrder},:#{#cart.appUser.id},:#{#cart.product.id}) " +
             "on duplicate key update quantity_order = :#{#cart.quantityOrder}",nativeQuery = true)
     void addToCart(Cart cart);
     @Query(value = "SELECT " +
