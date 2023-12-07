@@ -69,9 +69,10 @@ public class OrderService implements IOrderService{
             Integer isOrderDetailCreated = orderRepository.createOrderDetail(orderDetail);
             if (isOrderDetailCreated > 0){
                 Integer quantityOfProductAfterPayment = product.getQuantity() - orderDetail.getQuantity();
+                if (quantityOfProductAfterPayment <= 0 ){
+                    throw new Exception("Lỗi quantity");
+                }
                 productRepository.updateQuantityOfProduct(product.getId(),quantityOfProductAfterPayment);
-            }else {
-                orderRepository.deleteById(order.getId());
             }
         }
         cartRepository.deleteCart(userId);
